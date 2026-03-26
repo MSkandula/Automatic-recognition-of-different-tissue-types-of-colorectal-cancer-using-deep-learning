@@ -1,121 +1,182 @@
 **Automatic Tissue Classification in Colorectal Cancer using Deep Learning**
 
+**Built during Bachelor's at GITAM University Hyderabad**
+
 **Overview**
 
-- Colorectal cancer diagnosis heavily relies on manual histopathological analysis — a time-consuming and expertise-driven process.
-
-- This project builds an **end-to-end deep learning pipeline** to automatically classify **8 distinct tissue types** from histology images, demonstrating how AI can assist in faster and more consistent medical diagnosis.
+* Colorectal cancer diagnosis relies heavily on manual histopathological analysis, which is time-consuming, expertise-driven, and subject to variability
+* This project develops an end-to-end deep learning pipeline to classify histopathology images into 8 tissue types
+* The project compares a **custom CNN** and a **VGG16-based transfer learning model** to evaluate performance on medical imaging data
+* Focus is not just on accuracy, but on understanding **model behavior and generalization**
 
 **Problem Statement**
 
-Manual tissue classification:
+Manual tissue classification is:
 
-- Slow and labor-intensive
-- Requires domain expertise
-- Prone to human variability
+* Slow and labor-intensive
+* Dependent on expert knowledge
+* Prone to inconsistency
 
-The primary goal of my project is to Automate tissue classification using deep learning with high accuracy and reliability.
+The goal of this project is to:
 
----
+* Automate tissue classification using deep learning
+* Achieve high accuracy and reliability
+* Compare custom architectures vs transfer learning approaches
 
 **Dataset**
 
-- Source: TensorFlow Datasets (Colorectal Histology)
-- There are a total of 8 classes
+* Source: TensorFlow Datasets (colorectal_histology)
+* Total samples: 5000
+* Image resolution: 150 x 150
+* Number of classes: 8
 
-  - Tumor
-  - Debris
-  - Stroma
-  - Lymphocytes
-  - Complex
-  - Mucosa
-  - Adipose
-  - Empty
+Classes:
+
+* Tumor
+* Debris
+* Stroma
+* Lymphocytes
+* Complex
+* Mucosa
+* Adipose
+* Empty
 
 **Approach**
 
-### 1. Data Pipeline
-- Loaded and processed dataset using TensorFlow Datasets
-- Applied normalization and scaling
-- Implemented *data augmentation* (rotation, zoom, shift, flip) to improve generalization
+**1. Data Pipeline**
 
-### 2. Model 1 — Custom CNN
+* Loaded dataset using TensorFlow Datasets
+* Applied normalization and scaling
+* Implemented data augmentation:
 
-- Multi-layer CNN architecture with:
+  * Rotation
+  * Zoom
+  * Shift
+  * Horizontal flip
 
-  - Convolutional layers (32 → 256 filters)
-  - Batch Normalization
-  - MaxPooling
-  - Dropout for regularization
-  - Optimized using **Adam optimizer**
+**2. Model 1 - Custom CNN**
 
-### 3. Model 2 — Transfer Learning (VGG16)
+* Convolutional layers (32 → 256 filters)
 
-- Used pretrained **VGG16 (ImageNet)**
-- Strategy:
+* Batch Normalization
 
-  - Phase 1: Freeze convolutional base
-  - Phase 2: Fine-tune entire network
-- Added custom classification head
+* MaxPooling layers
 
+* Dropout for regularization
 
+* Optimized using Adam optimizer
 
-**Evaluation & Results**
+* Designed specifically for learning histopathological texture and structure
 
-- Accuracy & Loss curves across epochs
-- Confusion Matrix analysis
-- Classification report (precision, recall, F1-score)
+**3. Model 2 - Transfer Learning (VGG16)**
+
+* Pretrained VGG16 (ImageNet)
+* Training strategy:
+
+  * Phase 1: Freeze convolutional base
+  * Phase 2: Fine-tune entire network
+* Custom dense classification head
+
+**Results**
+
+* Custom CNN:
+
+  * Accuracy: 0.94
+  * Macro F1 Score: 0.94
+  * Weighted F1 Score: 0.94
+
+* VGG16 Transfer Learning:
+
+  * Accuracy: 0.89
+  * Macro F1 Score: 0.89
+  * Weighted F1 Score: 0.89
+
+* The custom CNN achieved higher accuracy and more balanced class-wise performance
+
+**Training Behavior**
+
+Custom CNN:
+
+* Smooth convergence
+* Stable validation accuracy (~0.91–0.92)
+* Minimal overfitting
+
+VGG16:
+
+* Slower convergence
+* Higher validation fluctuations
+* Overfitting observed in later epochs
+
+**Class-wise Performance Insights**
+
+Custom CNN:
+
+* Strong and consistent recall across all classes
+* High performance on:
+
+  * Tumor
+  * Lymphocytes
+  * Adipose
+
+VGG16:
+
+* Performance drop in:
+
+  * Debris
+  * Stroma
+  * Complex
+
+* Indicates that pretrained ImageNet features do not fully align with histopathology patterns
+
+**Confusion Matrix Analysis**
+
+Custom CNN:
+
+* Strong diagonal dominance
+* Minimal misclassification
+* Better class separation
+
+VGG16:
+
+* Confusion observed between:
+
+  * Debris and Stroma
+  * Complex and other tissues
 
 **Key Insights**
 
-- Transfer Learning significantly improved generalization compared to the custom CNN, especially on complex tissue patterns.
+* Transfer learning did not outperform the custom CNN in this case
+* Domain-specific feature learning can be more effective than generic pretrained features
+* Smaller, well-designed models can generalize better on specialized datasets
+* Transfer learning is not universally optimal, especially in medical imaging
 
+ **Skills Demonstrated**
 
-**Model Comparison**
+* Deep Learning model design
+* Transfer learning and fine-tuning
+* Data augmentation techniques
+* Model evaluation (confusion matrix, classification report)
+* End-to-end machine learning pipeline development
 
-| Model            | Strengths                      | Limitations               |
-| ---------------- | ------------------------------ | ------------------------- |
-| Custom CNN       | Fully controlled architecture  | Lower generalization      |
-| VGG16 (Transfer) | High accuracy, robust features | Higher computational cost |
+ **Tech Stack**
 
-
-**Skills Demonstrated**
-
-* Deep Learning Model Design (CNNs)
-* Transfer Learning & Fine-Tuning
-* Data Augmentation Strategies
-* Model Evaluation (Confusion Matrix, Classification Report)
-* End-to-End ML Pipeline Development
-
-** Tech Stack**
-
-- TensorFlow / Keras
-- TensorFlow Datasets
-- NumPy, Pandas
-- Matplotlib, Seaborn
-- Scikit-learn
-
-**Key Takeaways**
-
-- Transfer learning is highly effective for **medical imaging tasks with limited data**
-- Proper data augmentation is critical for generalization
-- Model comparison provides deeper insights than single-model approaches
+* TensorFlow / Keras
+* TensorFlow Datasets
+* NumPy
+* Matplotlib
+* Scikit-learn
 
 
 
-This project was developed as part of undergraduate coursework at GITAM University Hyderabad , but it reflects strong foundations in deep learning and real-world problem solving.
+## **Academic Context**
 
-
-Core implementation available in the project notebook/script: 
-
-
-*Scope for Future Improvements*
-
-- Implement Grad-CAM for model explainability
-- Experiment with EfficientNet / ResNet
-- Deploy as a web-based diagnostic tool
-- Integrate clinical metadata for multi-modal learning
+* This project was developed during my Bachelor's at GITAM University Hyderabad
+* Focused on applying deep learning to real-world medical imaging problems
 
 **Author**
 
-Developed by MAHESH SAI KANDULA, a data enthusiast transitioning into Data Science, with a strong focus on building real-world AI solutions.
+* Mahesh Sai Kandula
+
+
+
+That’s the difference between a “project” and something that gets you interviews.
